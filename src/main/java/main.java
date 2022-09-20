@@ -12,8 +12,8 @@ public class main {
 
         invoice invoice = new invoice("BigCo", performances);
 
-        //String print = invoice.bills(invoice, plays[0]);
+        String print = invoice.bills(invoice);
 
-        //System.out.println(print);
+        System.out.println(print);
     }
 }
