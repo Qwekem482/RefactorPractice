@@ -23,12 +23,22 @@ public class invoice {
         this.performances = performances;
     }
 
-    public String bills(invoice invoice) {
+    /**
+     * Create bill for customer
+     * @return a string contain bill's information and format
+     *
+     * Statement for [customer's name]
+     * [play's name]: [amount of money of this play]$ [total seats of this play] seats
+     * ...
+     * Amount owned is: [total amount of money]
+     * You earned [amount of credits] credits
+     */
+    public String bills() {
         int totalAmount = 0;
         int volumeCredit = 0;
-        StringBuilder result = new StringBuilder("Statement for " + invoice.getCustomer() + "\n");
+        StringBuilder result = new StringBuilder("Statement for " + this.getCustomer() + "\n");
 
-        for (performances perf : invoice.getPerformances()) {
+        for (performances perf : this.getPerformances()) {
             plays play = perf.getPlayID();
             int thisAmount = 0;
 
@@ -36,11 +46,21 @@ public class invoice {
             totalAmount += thisAmount;
             volumeCredit += calcVolumeCredit(perf);
 
-            result.append(play.getPlayID()).append(": ").append(thisAmount / 100).append("$ ")
-                    .append(perf.getAudience()).append(" seats\n");
+            result.append(play.getPlayID())
+                    .append(": ")
+                    .append(thisAmount)
+                    .append("$ ")
+                    .append(perf.getAudience())
+                    .append(" seats\n");
         }
-        result.append("Amount owned is: ").append(totalAmount / 100).append("$\n");
-        result.append("You earned ").append(volumeCredit).append("$ credits\n");
+
+        result.append("Amount owned is: ")
+                .append(totalAmount)
+                .append("$\n");
+
+        result.append("You earned ")
+                .append(volumeCredit)
+                .append("$ credits\n");
 
         return result.toString();
     }
@@ -51,17 +71,17 @@ public class invoice {
 
         switch (play.getType()) {
             case "tragedy":
-                result = 40000;
+                result = 400;
                 if (perf.getAudience() > 30) {
-                    result += 1000 * (perf.getAudience() - 30);
+                    result += 10 * (perf.getAudience() - 30);
                 }
                 break;
             case "comedy":
-                result = 30000;
+                result = 300;
                 if (perf.getAudience() > 20) {
-                    result += 10000 + 500 * (perf.getAudience() - 20);
+                    result += 100 + 5 * (perf.getAudience() - 20);
                 }
-                result += 300 * perf.getAudience();
+                result += 3 * perf.getAudience();
                 break;
             default:
                 throw new Error("unknown type: " + play.getType());
@@ -74,7 +94,6 @@ public class invoice {
         int result = 0;
 
         result += Math.max(perf.getAudience() - 30, 0);
-
         result += comedyAdd(perf);
 
         return result;

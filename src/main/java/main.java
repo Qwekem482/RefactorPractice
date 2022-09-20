@@ -12,7 +12,7 @@ public class main {
 
         invoice invoice = new invoice("BigCo", performances);
 
-        String print = invoice.bills(invoice);
+        String print = invoice.bills();
 
         System.out.println(print);
     }
